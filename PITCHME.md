@@ -31,6 +31,12 @@ dougtoppin@gmail.com
 ---
 ### Why use it
 
+Staying within the AWS ecosystem has advantages
+
++++
+
+No other tools to learn, install, configure and support
+
 ---
 ### Related tools
 
@@ -51,6 +57,10 @@ dougtoppin@gmail.com
 ---
 ### Nested Stacks
 
+Don't make one giant template
+
+Group related/hierarchical resources into templates
+
 ---
 
 ### Examples
@@ -67,7 +77,9 @@ Sometimes a stack delete will fail, you might need to try it again or do a manua
 
 +++
 
-use the Parameter Store to centralize settings
+Don't hardcode stuff in your templates
+
+Use the Parameter Store to centralize settings
 
 +++
 
