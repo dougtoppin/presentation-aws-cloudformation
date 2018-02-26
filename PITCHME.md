@@ -6,7 +6,7 @@ NOVALUG
 
 dougtoppin@gmail.com
 
-[github.com/dougtoppin/presentation-aws-cloudformation.git](github.com/dougtoppin/presentation-aws-cloudformation.git)
+[github.com/dougtoppin/presentation-aws-cloudformation](github.com/dougtoppin/presentation-aws-cloudformation.git)
 
 ---
 
