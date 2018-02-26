@@ -50,9 +50,17 @@ No other tools to learn, install, configure and support
 
 ### Where did it help me
 
+My datacenter is a yaml file
+
+Create an entire environment with a single command, again and again
+
 ---
 
 ### Syntax
+
+- yaml or json
+- parameters, conditions, resources, outputs
+- Designer UI can be helpful
 
 ---
 ### Nested Stacks
@@ -70,6 +78,16 @@ Group related/hierarchical resources into templates
 ---
 
 ### Lessons learned
+
+Move quickly from manual creation to automation
+
+Don't get in the habit of creating things using the admin console, it is difficult to recreate exactly, document and support
+
++++
+
+Creation using automation facilitates and encourages creating on demand, such as with regression test environments
+
++++
 
 deleting stacks
 
