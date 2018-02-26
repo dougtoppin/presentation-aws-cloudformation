@@ -55,13 +55,27 @@ dougtoppin@gmail.com
 
 ### Examples
 
+[github.com/awslabs/ecs-refarch-cloudformation](github.com/awslabs/ecs-refarch-cloudformation)
+
 ---
 
 ### Lessons learned
 
-- deleting stacks
+deleting stacks
 
 Sometimes a stack delete will fail, you might need to try it again or do a manual delete of a resource
+
++++
+
+use the Parameter Store to centralize settings
+
++++
+
+Does not support SecureStrings in the Parameter Store
+
++++
+
+Start with an existing set of templates rather then create your own from scratch
 
 ---
 
