@@ -37,6 +37,11 @@ Staying within the AWS ecosystem has advantages
 
 No other tools to learn, install, configure and support
 
++++
+
+It is comprehensive
+
+
 ---
 ### Related tools
 
@@ -59,7 +64,11 @@ Create an entire environment with a single command, again and again
 ### Syntax
 
 - yaml or json
-- parameters, conditions, resources, outputs
+- template contains
+  - parameters
+  - conditions
+  - resources
+  - outputs
 - Designer UI can be helpful
 
 ---
@@ -81,7 +90,7 @@ Group related/hierarchical resources into templates
 
 Move quickly from manual creation to automation
 
-Don't get in the habit of creating things using the admin console, it is difficult to recreate exactly, document and support
+Don't get in the habit of creating things using the admin console, it is difficult to recreate exactly, document and support things created using the admin console
 
 +++
 
@@ -97,7 +106,7 @@ Sometimes a stack delete will fail, you might need to try it again or do a manua
 
 Don't hardcode stuff in your templates
 
-Use the Parameter Store to centralize settings
+Use the Parameter Store to centralize settings, pass parameters between templates
 
 +++
 
