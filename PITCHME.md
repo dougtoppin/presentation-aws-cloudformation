@@ -14,10 +14,12 @@ dougtoppin@gmail.com
 
 - What is CloudFormation
 - Why use it
+- Related tools
 - Where did it help me
 - Syntax
-- Example
-- Lessons Learned
+- Nested stacks
+- Examples
+- Lessons learned
 - Demo
 - Links
 
@@ -28,18 +30,34 @@ dougtoppin@gmail.com
 
 ---
 ### Why use it
+
+---
+### Related tools
+
+- ansible
+- Terraform
+- Chef
+- Puppet
+- SaltStack
+
 ---
 
 ### Where did it help me
+
 ---
 
 ### Syntax
+
+---
+### Nested Stacks
+
 ---
 
-### Example
+### Examples
+
 ---
 
-### Lessons Learned
+### Lessons learned
 
 - deleting stacks
 
