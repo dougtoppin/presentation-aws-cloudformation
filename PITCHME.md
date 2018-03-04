@@ -46,17 +46,27 @@ No other tools to learn, install, configure, support and pay for
 
 * it is comprehensive
 * package all of your resources and creation/configuration/deletion orchestration into one or more templates
-* outside tools can be installed using a template
+* outside tools can be installed or configuration performed as a part of the template
 
++++
+
+If you have a demo or similar application to run in AWS and your instructions have the user manually create resources (security groups for example) and manually launch an EC2 instance you are going to lose some opportunities.
+
+Instead, create a CloudFormation template in a public bucket and have users launch it
+
++++
+
+Using it with existing templates requires less knowledge of AWS resource details
 
 ---
-### Related tools
+### Related provisioning tools
 
 - ansible
 - Terraform
 - Chef
 - Puppet
 - SaltStack
+- Red Hat CloudForms
 
 ---
 
@@ -78,12 +88,14 @@ Ease of environment creation facilitates things like automated regression testin
 
 Creating CloudWatch dashboards when creating/deploying a service to the cluster as a part of the service template
 
+Developers should include a monitoring dashboard along with their service
+
 ---
 
 ### Syntax
 
 - yaml or json (note that yaml can have comments)
-- template contains
+- template contains these sections
   - parameters - things passed in or defaulted
   - conditions - things to evaluate and set
   - resources - things to create
@@ -97,10 +109,12 @@ AWS resources are described using a format that can be found at [docs.aws.amazon
 Create an EC2 instance would start with the following and Properties would provide specifics
 
 ```
-AWS::EC2::Instance
+Type: "AWS::EC2::Instance"
 ```
 
-#### CLI
++++
+
+### CLI
 
 ```
 aws cloudformation create-stack \
@@ -121,7 +135,8 @@ Asynchronous resource creation means wait until everything has completed
 When using a shell script the CloudFormation `wait` function will hold until an action has completed or failed
 
 ```
-aws cloudformation wait stack-create-complete --stack-name test-01
+aws cloudformation wait stack-create-complete \
+    --stack-name test-01
 ```
 
 +++
@@ -138,7 +153,7 @@ aws cloudformation describe-stacks --stack-name test-01 \
 Delete a stack and remove all resources
 
 ```
-aws cloudformation delete-stack --stack-name $NAME
+aws cloudformation delete-stack --stack-name test-01
 ```
 
 +++
@@ -272,7 +287,7 @@ To prevent race conditions between stacks use Ouputs/export and ImportValue, thi
 
 +++
 
-Note that the Parameter Store is rate limited, be careful about having CloudFormation do a lot a put values without some governing
+Note that the Parameter Store is rate limited, be careful about having CloudFormation do a lot of put values without some rate governing
 ---
 
 ### Demo
