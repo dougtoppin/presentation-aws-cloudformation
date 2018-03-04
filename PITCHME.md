@@ -44,7 +44,9 @@ No other tools to learn, install, configure, support and pay for
 
 +++
 
-It is comprehensive
+* it is comprehensive
+* package all of your resources and creation/configuration/deletion orchestration into one or more templates
+* outside tools can be installed using a template
 
 
 ---
@@ -74,13 +76,13 @@ Ease of environment creation facilitates things like automated regression testin
 
 +++
 
-Creating CloudWatch dashboards when creating/deploying a service to the cluster
+Creating CloudWatch dashboards when creating/deploying a service to the cluster as a part of the service template
 
 ---
 
 ### Syntax
 
-- yaml or json
+- yaml or json (note that yaml can have comments)
 - template contains
   - parameters - things passed in or defaulted
   - conditions - things to evaluate and set
@@ -90,6 +92,14 @@ Creating CloudWatch dashboards when creating/deploying a service to the cluster
 
 +++
 
+AWS resources are described using a format that can be found at [docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html](docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html)
+
+Create an EC2 instance would start with the following and Properties would provide specifics
+
+```
+AWS::EC2::Instance
+```
+
 #### CLI
 
 ```
@@ -98,13 +108,17 @@ aws cloudformation create-stack \
    --template-url https://s3.amazonaws.com/test-01.yaml \
    --capabilities CAPABILITY_NAMED_IAM \
    --parameters \
-     ParameterKey=param1,ParameterValue=https://s3.amazonaws.com/mybucket
+     ParameterKey=param1,ParameterValue=value1
+
+For local testing use a file reference instead of a url to S3
+
+     --template-body file://./test-1.yaml
 ```
 
 +++
 Asynchronous resource creation means wait until everything has completed
 
-When using a shell script `wait` will hold until an action has completed or failed
+When using a shell script the CloudFormation `wait` function will hold until an action has completed or failed
 
 ```
 aws cloudformation wait stack-create-complete --stack-name test-01
@@ -113,13 +127,16 @@ aws cloudformation wait stack-create-complete --stack-name test-01
 +++
 
 Various `describe-` commands will list details about a stack
+
 ```
-aws cloudformation describe-stacks --stack-name test-01 --query 'Stacks[].StackStatus' --output text
+aws cloudformation describe-stacks --stack-name test-01 \
+    --query 'Stacks[].StackStatus' --output text
 ```
 
 +++
 
 Delete a stack and remove all resources
+
 ```
 aws cloudformation delete-stack --stack-name $NAME
 ```
@@ -132,6 +149,21 @@ Use `wait` to hold until the delete completes, necessary if related resouces can
 aws cloudformation wait stack-delete-complete --stack-name test-01
 ```
 
+
++++
+
+What are the resources in this template going to cost me?
+
+```
+aws cloudformation estimate-template-cost \
+    --template-body file://./single_instance.json \
+    --parameters ParameterKey=KeyName,ParameterValue=red
+
+Output will be a URL to the AWS cost calculator
+{
+  "Url": "http://calculator.s3.amazonaws.com/calc5.html?key=cloudformation/xxx"
+}
+```
 
 ---
 ### Nested Stacks
@@ -217,6 +249,10 @@ Don't hardcode stuff in your templates
 +++
 
 Use `wait` if you need to ensure that resource creation/deletion is orchestrated before continuing to the next action
+
++++
+
+When creating resources with names/keys concatenate the environment name to prevent conflicts if there is any chance that multiple instances of a stack might exist
 
 +++
 
