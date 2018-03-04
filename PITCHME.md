@@ -88,6 +88,51 @@ Creating CloudWatch dashboards when creating/deploying a service to the cluster
   - outputs - things to make visible and use elsewhere
 - Designer UI can be helpful
 
++++
+
+#### CLI
+
+```
+aws cloudformation create-stack \
+   --stack-name test-01 \
+   --template-url https://s3.amazonaws.com/test-01.yaml \
+   --capabilities CAPABILITY_NAMED_IAM \
+   --parameters \
+     ParameterKey=param1,ParameterValue=https://s3.amazonaws.com/mybucket
+```
+
++++
+Asynchronous resource creation means wait until everything has completed
+
+When using a shell script `wait` will hold until an action has completed or failed
+
+```
+aws cloudformation wait stack-create-complete --stack-name test-01
+```
+
++++
+
+Various `describe-` commands will list details about a stack
+```
+aws cloudformation describe-stacks --stack-name test-01 --query 'Stacks[].StackStatus' --output text
+```
+
++++
+
+Delete a stack and remove all resources
+```
+aws cloudformation delete-stack --stack-name $NAME
+```
+
++++
+
+Use `wait` to hold until the delete completes, necessary if related resouces cannot be deleted until this stack resources are deleted
+
+```
+aws cloudformation wait stack-delete-complete --stack-name test-01
+```
+
+
 ---
 ### Nested Stacks
 
@@ -171,7 +216,11 @@ Don't hardcode stuff in your templates
 
 +++
 
-CloudFormation does not support SecureStrings in the Parameter Store but it is in the AWS queue
+Use `wait` if you need to ensure that resource creation/deletion is orchestrated before continuing to the next action
+
++++
+
+CloudFormation does not support SecureStrings in the Parameter Store but it is in the AWS queue to get working someday
 
 +++
 
@@ -181,6 +230,13 @@ Start with an existing set of templates rather than create your own from scratch
 
 stack-updates seem to take a while vs delete/create cycles
 
++++
+
+To prevent race conditions between stacks use Ouputs/export and ImportValue, this will cause a dependency/wait to occur. This also helps in creating a stack that needs something to exist but the "base" stack was never created.
+
++++
+
+Note that the Parameter Store is rate limited, be careful about having CloudFormation do a lot a put values without some governing
 ---
 
 ### Demo
@@ -191,5 +247,6 @@ stack-updates seem to take a while vs delete/create cycles
 ## Links
 
 - [aws.amazon.com/cloudformation/](aws.amazon.com/cloudformation)
+- [docs.aws.amazon.com/cli/latest/reference/cloudformation/index.html#cli-aws-cloudformation](docs.aws.amazon.com/cli/latest/reference/cloudformation/index.html#cli-aws-cloudformation)
 - [docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html](docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html)
 - [cloudonaut.io/optional-parameter-in-cloudformation/](cloudonaut.io/optional-parameter-in-cloudformation)
