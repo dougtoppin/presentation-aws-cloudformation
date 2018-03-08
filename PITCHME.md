@@ -114,6 +114,49 @@ Type: "AWS::EC2::Instance"
 
 +++
 
+Example - launching an EC2 instance
+
+```
+{
+   "AWSTemplateFormatVersion" : "2010-09-09",
+   "Description" : "launch ec2 instance",
+   "Resources" : {
+      "MyEC2Instance" : {
+         "Type" : "AWS::EC2::Instance",
+         "Properties" : {
+            "ImageId" : "ami-97785bed",
+            "IamInstanceProfile" : "dougtoppin-ssm-full"
+         }
+      }
+   }
+}
+
+```
+
++++
+
+IAM - Create Role called dougtoppin-ssm-full
+
+Attach this policy: AmazonEC2RoleforSSM
+
++++
+
+Create the stack (causing the instance to launch) with this
+```
+aws cloudformation create-stack \
+    --stack-name test-ec2 \
+    --template-body file://./single_instance_3.json
+```
+
++++
+
+Example - installing OpenShift on an instance during launch
+
+tbd
+
+
++++
+
 ### CLI
 
 ```
@@ -284,6 +327,10 @@ stack-updates seem to take a while vs delete/create cycles
 +++
 
 To prevent race conditions between stacks use Ouputs/export and ImportValue, this will cause a dependency/wait to occur. This also helps in creating a stack that needs something to exist but the "base" stack was never created.
+
++++
+
+Stacks can take a while to complete, particularly if there are numerous dependencies, use `wait` to allow creations to occur in parallel and save time
 
 +++
 
