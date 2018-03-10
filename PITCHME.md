@@ -124,35 +124,13 @@ Example - launching an EC2 instance
       "MyEC2Instance" : {
          "Type" : "AWS::EC2::Instance",
          "Properties" : {
-            "ImageId" : "ami-97785bed",
-            "IamInstanceProfile" : "dougtoppin-ssm-full"
+            "ImageId" : "ami-97785bed"
          }
       }
    }
 }
 
 ```
-
-+++
-
-IAM - Create Role called dougtoppin-ssm-full
-
-Attach this policy: AmazonEC2RoleforSSM
-
-+++
-
-Create the stack (causing the instance to launch) with this
-```
-aws cloudformation create-stack \
-    --stack-name test-ec2 \
-    --template-body file://./single_instance_3.json
-```
-
-+++
-
-Example - installing OpenShift on an instance during launch
-
-tbd
 
 
 +++
@@ -201,7 +179,7 @@ aws cloudformation delete-stack --stack-name test-01
 
 +++
 
-Use `wait` to hold until the delete completes, necessary if related resouces cannot be deleted until this stack resources are deleted
+Use `wait` to hold until the delete completes, necessary if related resources cannot be deleted until this stack resources are deleted
 
 ```
 aws cloudformation wait stack-delete-complete --stack-name test-01
@@ -248,7 +226,7 @@ Launch an EC2 instance
          "Properties" : {
             "ImageId" : "ami-97785bed",
             "Tags" : [ {  "Key" : "Name", "Value" : "ec2-1"} ],
-            "IamInstanceProfile" : "dougtoppin-ssm-full",
+            "IamInstanceProfile" : "yourname-ssm-full",
             "UserData" : "IyEvYmluL3NoCnRvdWNoIC90bXAvdGVzdC50eHQK"
          }
       }
@@ -260,7 +238,7 @@ Launch an EC2 instance
 
 +++
 
-IAM - Create Role called dougtoppin-ssm-full
+IAM - Create Role called yourname-ssm-full
 
 Attach this policy: AmazonEC2RoleforSSM
 
@@ -309,6 +287,23 @@ Put something into the Parameter Store
         "Value" : { "Fn::GetAtt": [ "MyDB", "Endpoint.Address" ] }
       }
     }
+```
+
++++
+
+Example - installing tools on an instance during launch
+
+```
+#!/bin/bash
+yum update -y
+yum install -y mlocate
+updatedb
+yum install -y git
+```
+
+Convert to base64 and put output in the UserData property:
+```
+cat userdata-1.sh | base64
 ```
 +++
 
