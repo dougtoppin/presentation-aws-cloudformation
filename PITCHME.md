@@ -238,7 +238,40 @@ Templates can invoke/reference other templates
 
 Launch an EC2 instance
 
-tbd
+```
+{
+   "AWSTemplateFormatVersion" : "2010-09-09",
+   "Description" : "launch ec2 instance, create file /tmp/test.txt",
+   "Resources" : {
+      "MyEC2Instance" : {
+         "Type" : "AWS::EC2::Instance",
+         "Properties" : {
+            "ImageId" : "ami-97785bed",
+            "Tags" : [ {  "Key" : "Name", "Value" : "ec2-1"} ],
+            "IamInstanceProfile" : "dougtoppin-ssm-full",
+            "UserData" : "IyEvYmluL3NoCnRvdWNoIC90bXAvdGVzdC50eHQK"
+         }
+      }
+   }
+}
+
+
+```
+
++++
+
+IAM - Create Role called dougtoppin-ssm-full
+
+Attach this policy: AmazonEC2RoleforSSM
+
++++
+
+Create the stack (causing the instance to launch) with this
+```
+aws cloudformation create-stack \
+    --stack-name ec2-1 \
+    --template-body file://./ec2-1.json
+```
 
 +++
 
